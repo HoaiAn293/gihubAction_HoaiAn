@@ -1,0 +1,49 @@
+name: Fancy CI - Phân tích README
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  readme_analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6.0.2
+
+      - name: In banner cho có vibe
+        run: |
+          echo "=============================="
+          echo " CI/CD đang chạy cho Ân "
+          echo "=============================="
+
+      - name: Kiểm tra file README tồn tại
+        run: |
+          if [ -f README.md ]; then
+            echo "README tồn tại"
+          else
+            echo " Không tìm thấy README"
+            exit 1
+          fi
+
+      - name: Đọc README (có format)
+        run: |
+          echo "----- BẮT ĐẦU README -----"
+          cat README.md
+          echo "----- KẾT THÚC README -----"
+
+      - name: Đếm số dòng & số từ
+        run: |
+          echo "Số dòng:"
+          wc -l README.md
+          echo "Số từ:"
+          wc -w README.md
+
+      - name: Tìm keyword
+        run: |
+          echo "Tìm các từ: Docker | API | Deploy"
+          grep -Ei "docker|api|deploy" README.md || echo "Không thấy keyword nào"
+
+      - name: Kết thúc
+        run: echo "CI chạy xong"
